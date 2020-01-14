@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>To Do List</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">To Do List</h1>
+    {% if tasks|length < 1 %}
+    <h4 style="text-align: center">There are no tasks. Create one below!</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>Index</th>
+            <th>Task</th>
+            <th>Date Created</th>
+            <th>Date Completed</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.content }}</td>
+                <td>{{ task.date_created.strftime("%d-%b-%Y (%H:%M:%S.%f)") }} </td>
+                {% if task.date_completed.strftime("%d-%b-%Y") == "01-Jan-2000" %}
+                <td> </td>
+                {% else %}
+                <td>{{ task.date_completed.strftime("%d-%b-%Y (%H:%M:%S.%f)") }}</td>
+                {% endif %}
+                <td>
+                    <a href="/delete/{{task.id}}">Delete</a>
+                    <br>
+                    <a href="/update/{{task.id}}">Update</a>
+                    <br>
+                    {% if task.date_completed.strftime("%d-%b-%Y") == "01-Jan-2000" %}
+                    <a href="/complete/{{task.id}}">Complete</a>
+                    {% else %}
+                    <a href="/uncomplete/{{task.id}}">Uncomplete</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <div class="form">
+        <form action="/" method="POST">
+            <input type="text" name="content" id="content">
+            <input type="submit" value="Add Task">
+        </form>
+    </div>
+</div>
+{% endblock %}
