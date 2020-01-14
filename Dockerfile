@@ -2,15 +2,15 @@ FROM python:3.6-alpine
 
 MAINTAINER gregkoul@gmail.com
 
-RUN pip install flask flask-sqlalchemy
-
 COPY webapp-flask-intro/. /opt/
 
-EXPOSE 5000
+WORKDIR /opt
+
+RUN pip install -r requirements.txt
 
 VOLUME /opt/
 
-WORKDIR /opt
+EXPOSE 5000
 
 ENTRYPOINT ["python"]
 
